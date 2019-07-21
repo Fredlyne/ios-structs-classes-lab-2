@@ -11,6 +11,26 @@ struct Room {
      let length: Double
      let width: Double
 }
+
+```
+
+
+```
+struct Room {
+var maxOccupancy: Int
+var length: Double
+var  width: Double
+}
+var condo = Room(maxOccupancy: 3, length: 10.0, width: 15.0)
+
+condo.maxOccupancy
+condo.length
+condo.width
+
+var newCondo = condo
+newCondo.maxOccupancy = 5
+print(newCondo)
+print(condo)
 ```
 
 ## Question 2
@@ -24,6 +44,23 @@ class Bike {
 }
 ```
 
+```
+class Bike {
+var wheelNumber = 2
+var hasBell = false
+}
+let freddiBike = Bike ()
+
+print(freddiBike.wheelNumber)
+let newBike = freddiBike
+print(newBike.wheelNumber)
+freddiBike.wheelNumber = 3
+print(freddiBike.wheelNumber)
+newBike.wheelNumber
+print(newBike.wheelNumber)
+
+```
+
 ## Question 3
 
 a. Given the Animal class below, create a Bird subclass with a new `canFly` property.
@@ -35,6 +72,34 @@ class Animal {
         print("I am an animal named \(name)")
     }
 }
+
+class Animal {
+var name: String
+
+init(name: String) {
+self.name = name
+}
+func printDescription () {
+print("I am an animal named \(name)")
+}
+}
+
+let newAnimal = Animal(name: "Polly")
+newAnimal.name
+
+class Bird: Animal {
+var species: String
+var canFly: Bool
+
+init(name:String, species: String, canFly: Bool) {
+self.canFly = canFly
+self.species = species
+super.init(name: name)
+}
+}
+
+
+
 ```
 
 b. Override the printDescription method to have the instance of the Bird object print out its name and whether it can fly
@@ -53,6 +118,39 @@ class Bike {
     }
   }
 }
+
+class Bike {
+var wheelNumber = 2
+var wheelWidth = 1.3
+var hasBell = true
+func ringBell() {
+if hasBell {
+print("Ring!")
+}
+}
+}
+
+class Loudbike: Bike {
+
+var color: String
+init (color: String, wheelNumber: Int, wheelWidth: Double, hasBell: Bool) {
+self.color = color
+ hasBell: hasBell)
+}
+override func ringBell() {
+if hasBell {
+print("RING! \(printRingBell(times: 4)) times ")
+}
+}
+
+private func printRingBell(times: Int) -> Int {
+return times
+}
+}
+
+let louderBike = Loudbike(color: "pink", wheelNumber: 2, wheelWidth: 3.0, hasBell: true)
+louderBike.ringBell()
+
 ```
 
 
@@ -108,28 +206,37 @@ let distanceBetweenTwoPoints = sqrt(horizontalDistance * horizontalDistance + ve
 
 `sqrt` is a method in Swift that gives the square root.  Make sure to have `import Foundation` or `import UIKit` to use this method.
 
-```swift
-struct Point {
-    let x: Double
-    let y: Double
-    func distance(to point: Point) -> Double {
-      //Code in your answer here
-    }
+```struct Point {
+let x: Double
+let y: Double
+func distance(to point: Point) -> Double {
+let horizontal = self.x - point.x
+let vertical = self.y - point.y
+return sqrt(horizontal * horizontal + vertical * vertical )
+}
 }
 
 let pointOne = Point(x: 0, y: 0)
 let pointTwo = Point(x: 10, y: 10)
 
 print(pointOne.distance(to: pointTwo)) //Prints 14.142135623730951
+ 
 ```
 
 
 b. Given the above Point object, and Circle object below, add a `contains` method that returns whether or not a given point is on the circle
 
-```swift
-struct Circle {
-    let radius: Double
-    let center: Point
+```struct Circle {
+let radius: Double
+let center: Point
+func contains (point: Point) -> Bool {
+return center.distance(to: point) == radius
+}
+func getRandomPoint() -> Point {
+let x: Double = Double.random(in: 0 - radius...radius)
+let y = sqrt(radius * radius - x * x)
+return Point(x: x, y: y)
+}
 }
 
 let pointOne = Point(x: 0, y: 0)
@@ -137,9 +244,10 @@ let circleOne = Circle(radius: 5, center: pointOne)
 let pointTwo = Point(x: 5, y: 0)
 let pointThree = Point(x: 4, y: 0)
 let pointFour = Point(x: sqrt(12.5), y: sqrt(12.5))
-circleOne.contains(pointTwo) //true
-circleOne.contains(pointThree) // false
-circleOne.contains(pointFour) //true
+circleOne.contains(point: pointTwo) //true
+circleOne.contains(point: pointThree) // false
+circleOne.contains(point: pointFour) //true
+
 ```
 
 c. Add another method to `Circle` that returns a random point on the circle
